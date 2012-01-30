@@ -40,4 +40,10 @@ class GeaController extends AbstractController {
 
         $sender->send(json_encode($final));
     }
+
+    public function stats() {
+        $this->assign('commits', Table::factory('Commits')->findAll(array(
+            'email' => $this->user->email,
+        ), null, "`date` DESC"));
+    }
 }
