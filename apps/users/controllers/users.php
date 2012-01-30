@@ -61,8 +61,27 @@ class UsersController extends AbstractController {
             $data = json_decode(
                 file_get_contents("https://api.github.com/user?access_token=".$token)
             , true);
-            var_dump($data);
-            die();
+
+            $user = Table::factory('Users')->findByGithubId($data['id']);
+
+            if ($user == false) {
+                $user = Table::factory('Users')->newObject();
+                $user->setValues(array(
+                    'name' => $data['name'],
+                    'username' => $data['login'],
+                    'github_id' => $data['id'],
+                    'email' => $data['email'],
+                    'token' => $token,
+                ));
+                $user->save();
+            }
+
+            $user->addToSession();
+            return $this->redirect(array(
+                'app' => 'gea',
+                'controller' => 'Gea',
+                'action' => 'welcome',
+            ));
         } else {
             die("no token");
         }

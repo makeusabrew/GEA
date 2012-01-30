@@ -62,8 +62,11 @@ class Users extends Table {
             "email" => array(
                 "type" => "email",
             ),
-            "secret" => array(
-                "type" => "secret",
+            "token" => array(
+                "type" => "text",
+            ),
+            "github_id" => array(
+                "type" => "number",
             ),
         ),
     );
@@ -104,5 +107,11 @@ class Users extends Table {
         }
         $user->setAuthed(true);
         return $user;
+    }
+
+    public function findByGithubId($id) {
+        return $this->find(array(
+            'github_id' => $id,
+        ));
     }
 }

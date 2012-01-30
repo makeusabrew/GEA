@@ -1,5 +1,5 @@
 <?php
 
 PathManager::loadPaths(
-    array("/gea", "index")
+    array("/hi", "welcome")
 );
