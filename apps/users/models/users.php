@@ -47,6 +47,12 @@ class User extends Object {
         $this->isAuthed = $authed;
     }
 
+    public function getRepositories() {
+        return Table::factory('Repositories')->findAll(array(
+            'user_id' => $this->getId()
+        ));
+    }
+
 }
 
 class Users extends Table {
