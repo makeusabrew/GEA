@@ -44,7 +44,7 @@ class SiteTest extends SeleniumTestController {
      */
     public function testHomepageTitle() {
         $this->open("/");
-        $this->assertTitle('Jaoss Web Template');
+        $this->assertTitle('Git(hub) Effort Aggregator');
     }
 
     /**
