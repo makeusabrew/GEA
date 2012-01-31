@@ -46,4 +46,28 @@ class GeaController extends AbstractController {
             'email' => $this->user->email,
         ), null, "`date` DESC"));
     }
+
+    public function user_profile() {
+        // do stats
+        $user = Table::factory('Users')->findByUsername($this->getMatch('username'));
+        if (!$user) {
+            throw new CoreException('User not found', CoreException::PATH_REJECTED);
+        }
+
+        $commits = Table::factory('Commits')->findAllForUserForWeek($user->getId());
+
+        // pie chart stuff
+        $commits_week = array();
+        foreach ($commits as $commit) {
+            if (!isset($commits_week[$commit->r_name])) {
+                $commits_week[$commit->r_name] = 1;
+            } else {
+                $commits_week[$commit->r_name] ++;
+            }
+        }
+
+        // stacked bar chart
+        $this->assign('commits_week', $commits_week);
+        $this->assign('commits_stacked', $commits_stacked);
+    }
 }

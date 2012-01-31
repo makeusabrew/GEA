@@ -120,4 +120,10 @@ class Users extends Table {
             'github_id' => $id,
         ));
     }
+
+    public function findByUsername($username) {
+        return $this->find(array(
+            'username' => $username,
+        ));
+    }
 }
