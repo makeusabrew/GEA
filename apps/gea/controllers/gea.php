@@ -58,7 +58,11 @@ class GeaController extends AbstractController {
 
         // pie chart stuff
         $commits_week = array();
+        $repos = array();
         foreach ($commits as $commit) {
+            if (!isset($repos[$commit->r_name])) {
+                $repos[$commit->r_name] = array();
+            }
             if (!isset($commits_week[$commit->r_name])) {
                 $commits_week[$commit->r_name] = 1;
             } else {
@@ -66,8 +70,24 @@ class GeaController extends AbstractController {
             }
         }
 
+        ksort($repos);
+
         // stacked bar chart
+        $initialDate = strtotime("-7 days", Utils::getTimestamp());
+        $labels = array();
+        for ($i = 0; $i < 7; $i++) {
+            $labels[] = $curDate = date("F jS", strtotime("+{$i} days", $initialDate));
+            foreach ($repos as $key => $val) {
+                $repos[$key][$i] = null;
+                foreach ($commits as $commit) {
+                    if ($commit->r_name == $key && date("F jS", $commit->date) == $curDate) {
+                        $repos[$key][$i] ++;
+                    }
+                }
+            }
+        }
+        $this->assign('stacked_labels', $labels);
         $this->assign('commits_week', $commits_week);
-        $this->assign('commits_stacked', $commits_stacked);
+        $this->assign('commits_stacked', $repos);
     }
 }
