@@ -41,12 +41,6 @@ class GeaController extends AbstractController {
         $sender->send(json_encode($final));
     }
 
-    public function stats() {
-        $this->assign('commits', Table::factory('Commits')->findAll(array(
-            'email' => $this->user->email,
-        ), null, "`date` DESC"));
-    }
-
     public function user_profile() {
         // do stats
         $user = Table::factory('Users')->findByUsername($this->getMatch('username'));
@@ -94,5 +88,9 @@ class GeaController extends AbstractController {
         }
         $this->assign('stacked_labels', $labels);
         $this->assign('commits_stacked', $repos);
+    }
+
+    public function my_projects() {
+        $this->assign('projects', $this->user->getRepositories());
     }
 }

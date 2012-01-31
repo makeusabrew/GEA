@@ -2,7 +2,7 @@
 
 PathManager::loadPaths(
     array("/hi", "welcome"),
-    array("/stats", "stats"),
+    array("/projects", "my_projects"),
     array(
         "pattern" => "/import",
         "action"  => "import",

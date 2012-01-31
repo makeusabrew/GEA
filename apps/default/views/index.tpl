@@ -2,8 +2,8 @@
 {block name="body"}
     <h1>{setting value="site.title"}</h1>
     {if $user->isAuthed()}
-        <p>Hi</p>
+        <p>Welcome <strong>{$user->username}</strong>.</p>
     {else}
-        <p><a href="/login">Auth</a></p>
+        <p>Hello! Why not sign in to get started?</p>
     {/if}
 {/block}
