@@ -50,7 +50,7 @@
                     defaultSeriesType: 'column'
                 },
                 title: {
-                    text: "Commits by day, last 7 days"
+                    text: "Commits by day, last 30 days"
                 },
                 xAxis: {
                     categories: [{foreach from=$stacked_labels item="label" name="loop"}'{$label}'{if $smarty.foreach.loop.last == false},{/if}{/foreach}]

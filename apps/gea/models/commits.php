@@ -31,7 +31,7 @@ class Commits extends Table {
         ));
     }
 
-    public function findAllForUserForWeek($user_id) {
+    public function findAllForUserForDays($user_id, $days) {
         $sql = "SELECT ".$this->getColumnString("c").",
         r.name as r_name
         FROM `commits` c
@@ -44,7 +44,7 @@ class Commits extends Table {
         ORDER BY c.date DESC";
         
         $params = array(
-            strtotime("-7 days", Utils::getTimestamp()),
+            strtotime("-{$days} days", Utils::getTimestamp()),
             $user_id
         );
         return $this->queryAll($sql, $params);

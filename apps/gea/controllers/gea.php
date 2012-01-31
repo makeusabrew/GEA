@@ -54,28 +54,34 @@ class GeaController extends AbstractController {
             throw new CoreException('User not found', CoreException::PATH_REJECTED);
         }
 
-        $commits = Table::factory('Commits')->findAllForUserForWeek($user->getId());
+        $commits = Table::factory('Commits')->findAllForUserForDays($user->getId(), 7);
 
         // pie chart stuff
         $commits_week = array();
-        $repos = array();
         foreach ($commits as $commit) {
-            if (!isset($repos[$commit->r_name])) {
-                $repos[$commit->r_name] = array();
-            }
             if (!isset($commits_week[$commit->r_name])) {
                 $commits_week[$commit->r_name] = 1;
             } else {
                 $commits_week[$commit->r_name] ++;
             }
         }
+        $this->assign('commits_week', $commits_week);
+
+        $commits = Table::factory('Commits')->findAllForUserForDays($user->getId(), 30);
+
+        $repos = array();
+        foreach ($commits as $commit) {
+            if (!isset($repos[$commit->r_name])) {
+                $repos[$commit->r_name] = array();
+            }
+        }
 
         ksort($repos);
 
         // stacked bar chart
-        $initialDate = strtotime("-7 days", Utils::getTimestamp());
+        $initialDate = strtotime("-30 days", Utils::getTimestamp());
         $labels = array();
-        for ($i = 0; $i < 7; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             $labels[] = $curDate = date("F jS", strtotime("+{$i} days", $initialDate));
             foreach ($repos as $key => $val) {
                 $repos[$key][$i] = null;
@@ -87,7 +93,6 @@ class GeaController extends AbstractController {
             }
         }
         $this->assign('stacked_labels', $labels);
-        $this->assign('commits_week', $commits_week);
         $this->assign('commits_stacked', $repos);
     }
 }
