@@ -1,7 +1,7 @@
 {extends 'default/views/base.tpl'}
 {block name='body'}
-    <div id="last_week"></div>
     <div id="last_week_stacked"></div>
+    <div id="last_week"></div>
 {/block}
 {block name='script'}
     <script src='/js/highcharts/highcharts.js'></script>
@@ -78,8 +78,7 @@
                     column: {
                         stacking: 'normal',
                         dataLabels: {
-                            enabled: true,
-                            color: 'white'
+                            enabled: false
                         }
                     }
                 },
