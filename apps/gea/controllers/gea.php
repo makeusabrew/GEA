@@ -88,6 +88,39 @@ class GeaController extends AbstractController {
         }
         $this->assign('stacked_labels', $labels);
         $this->assign('commits_stacked', $repos);
+
+
+        /**
+         * last year
+         * by month
+         */
+        $commits = Table::factory('Commits')->findAllForUserForDays($user->getId(), 365);
+
+        $repos = array();
+        foreach ($commits as $commit) {
+            if (!isset($repos[$commit->r_name])) {
+                $repos[$commit->r_name] = array();
+            }
+        }
+
+        ksort($repos);
+
+        // stacked bar chart
+        $initialDate = strtotime("-365 days", Utils::getTimestamp());
+        $labels = array();
+        for ($i = 0; $i < 12; $i++) {
+            $labels[] = $curDate = date("M Y", strtotime("+{$i} months", $initialDate));
+            foreach ($repos as $key => $val) {
+                $repos[$key][$i] = null;
+                foreach ($commits as $commit) {
+                    if ($commit->r_name == $key && date("M Y", $commit->date) == $curDate) {
+                        $repos[$key][$i] ++;
+                    }
+                }
+            }
+        }
+        $this->assign('year_stacked_labels', $labels);
+        $this->assign('year_commits_stacked', $repos);
     }
 
     public function my_projects() {

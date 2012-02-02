@@ -1,6 +1,7 @@
 {extends 'default/views/base.tpl'}
 {block name='body'}
     <div id="last_week_stacked"></div>
+    <div id="last_year_stacked"></div>
     <div id="last_week"></div>
 {/block}
 {block name='script'}
@@ -84,6 +85,54 @@
                 },
                 series: [
                     {foreach from=$commits_stacked item="data" key="repo" name="loop"}
+                    {
+                    name: '{$repo}',
+                    data: [{foreach from=$data item="day" name="inner"}{if $day == 0}null{else}{$day}{/if}{if $smarty.foreach.inner.last == false},{/if}{/foreach}]
+                    }{if $smarty.foreach.loop.last == false},{/if}
+                    {/foreach}
+                ]
+            });
+
+            var year_stacked = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'last_year_stacked',
+                    defaultSeriesType: 'column'
+                },
+                title: {
+                    text: "Commits by month, last year"
+                },
+                xAxis: {
+                    categories: [{foreach from=$year_stacked_labels item="label" name="loop"}'{$label}'{if $smarty.foreach.loop.last == false},{/if}{/foreach}]
+                },
+                yAxis: {
+                    title: {
+                        text: "Total commits"
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: "bold",
+                            color: "gray"
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function() {
+                        return '<b>'+ this.x +'</b><br/>'+
+                        this.series.name +': '+ this.y +'<br/>'+
+                        'Total: '+ this.point.stackTotal;
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }
+                },
+                series: [
+                    {foreach from=$year_commits_stacked item="data" key="repo" name="loop"}
                     {
                     name: '{$repo}',
                     data: [{foreach from=$data item="day" name="inner"}{if $day == 0}null{else}{$day}{/if}{if $smarty.foreach.inner.last == false},{/if}{/foreach}]
