@@ -126,4 +126,8 @@ class GeaController extends AbstractController {
     public function my_projects() {
         $this->assign('projects', $this->user->getRepositories());
     }
+
+    public function add_project() {
+        //
+    }
 }
