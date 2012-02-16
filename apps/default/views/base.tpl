@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class=container>
+    <div class="container main">
         {block name="body"}
             <p>Your body content goes here. This block will be automatically
             overridden when you extend this base template and re-declare
