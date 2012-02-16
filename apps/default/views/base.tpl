@@ -27,11 +27,13 @@
             </div>
         </div>
     </div>
-    {block name="body"}
-        <p>Your body content goes here. This block will be automatically
-        overridden when you extend this base template and re-declare
-        this block.</p>
-    {/block}
+    <div class=container>
+        {block name="body"}
+            <p>Your body content goes here. This block will be automatically
+            overridden when you extend this base template and re-declare
+            this block.</p>
+        {/block}
+    </div>
 
     {*
       ordinarily body will probably be wrapped with surrounding markup, so it

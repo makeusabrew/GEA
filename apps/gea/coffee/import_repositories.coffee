@@ -31,7 +31,7 @@ queue.on 'message', (data) ->
     client.query "SELECT * FROM `repositories` WHERE ID IN(#{qStr})", ids, (err, results) ->
         throw err if err?
         async.forEachLimit results, 10, (item, fn) ->
-            cloneCmd = "git clone --bare #{item.clone_url} /tmp/repo_#{item.github_id}"
+            cloneCmd = "git clone --bare #{item.clone_url} /tmp/repo_#{item.id}"
             console.log cloneCmd
             exec cloneCmd, (err, stdout, stderr) ->
                 throw err if err?
@@ -45,7 +45,7 @@ queue.on 'message', (data) ->
             throw err if err?
             console.log "Done cloning, now processing logs"
             async.forEachLimit clonedIds, 10, (item, fn) ->
-                log = spawn 'git', ['log', '--pretty=format:"%H|%aE|%at|%s"'], {cwd: "/tmp/repo_#{item.github_id}"}
+                log = spawn 'git', ['log', '--pretty=format:"%H|%aE|%at|%s"'], {cwd: "/tmp/repo_#{item.id}"}
                 
                 log.stdout.on 'data', (data) ->
                     lines = data.toString('utf8').split /\n/
@@ -68,6 +68,6 @@ queue.on 'message', (data) ->
             , (err) ->
                 throw err if err?
                 console.log "All done"
-                queue.close()
-                client.end ->
-                    process.exit 0
+                #queue.close()
+                #client.end ->
+                #process.exit 0

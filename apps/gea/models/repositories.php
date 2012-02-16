@@ -18,9 +18,27 @@ class Repositories extends Table {
             ),
             'clone_url' => array(
                 'type' => 'text',
+                'title' => 'Clone URL',
             ),
             'name' => array(
                 'type' => 'text',
+                'title' => 'Project Name',
+            ),
+            'type' => array(
+                'type' => 'select',
+                'options' => array(
+                    'github' => 'GitHub',
+                    'other'  => 'Other',
+                ),
+                'title' => 'Type',
+            ),
+            'auth_type' => array(
+                'type' => 'select',
+                'options' => array(
+                    'key' => 'SSH Public Key',
+                    'password'  => 'Password',
+                ),
+                'title' => 'Authentication',
             ),
             'description' => array(
                 'type' => 'text',

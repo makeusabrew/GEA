@@ -74,11 +74,11 @@
     {/if}
 {/if}
 
-<div class="clearfix{if isset($fclass)} {$fclass}{/if}{if $error} error{/if}">
-    <label for="{$field}">{$title}{if $required} <span class='required'>*</span>{/if}</label>
-    <div class="input">
+<div class="control-group{if isset($fclass)} {$fclass}{/if}{if $error} error{/if}">
+    <label class="control-label" for="{$field}">{$title}{if $required} <span class='required'>*</span>{/if}</label>
+    <div class="controls">
         {if $type == "textarea"}
-            <textarea{if isset($placeholder)} placeholder="{$placeholder}"{/if}{if isset($disabled)} disabled=""{/if} id="{$field}" name="{$field}" class="xlarge{if $error} error{/if}"{if $required} required=""{/if}>{if isset($value)}{$value|htmlentities8}{/if}</textarea>
+            <textarea{if isset($placeholder)} placeholder="{$placeholder}"{/if}{if isset($disabled)} disabled=""{/if} id="{$field}" name="{$field}" class="input-xlarge{if $error} error{/if}"{if $required} required=""{/if}>{if isset($value)}{$value|htmlentities8}{/if}</textarea>
         {elseif $type == "select" && isset($seloptions)}
             <select{if isset($disabled)} disabled=""{/if} id="{$field}" name="{$field}" class="select{if $error} error{/if}"{if $required} required=""{/if}>
                 {foreach from=$seloptions item="selopt" key="selkey"}
@@ -88,22 +88,18 @@
                 {assign var="selkey" value=null}
             </select>
         {elseif $type == "checkbox" && isset($seloptions)}
-            <ul class='inputs-list'>
-                {foreach from=$seloptions item="selopt" key="selkey"}
-                    <li>
-                        <label for="{$field}_{$selkey}">
-                            <input type="checkbox"
-                            {if isset($disabled)} disabled=""{/if}
-                            id="{$field}_{$selkey}"
-                            name="{$field}[{$selkey}]"
-                            class="checkbox{if $error} error{/if}"
-                            {if isset($value) && is_array($value) && isset($value[$selkey])} checked=""{/if}
-                            />
-                            <span>{$selopt}</span>
-                        </label>
-                    </li>
-                {/foreach}
-            </ul>
+            {foreach from=$seloptions item="selopt" key="selkey"}
+                <label class="checkbox" for="{$field}_{$selkey}">
+                    <input type="checkbox"
+                    {if isset($disabled)} disabled=""{/if}
+                    id="{$field}_{$selkey}"
+                    name="{$field}[{$selkey}]"
+                    class="checkbox{if $error} error{/if}"
+                    {if isset($value) && is_array($value) && isset($value[$selkey])} checked=""{/if}
+                    />
+                    <span>{$selopt}</span>
+                </label>
+            {/foreach}
             {assign var="selopt" value=null}
             {assign var="selkey" value=null}
         {elseif $type == 'bool'}
@@ -112,9 +108,18 @@
                 <option value="0"{if isset($value) && $value == false} selected=""{/if}>No</option>
             </select>
         {else}
+            {if isset($icon)}
+                <div class="input-prepend">
+                    <span class="add-on">
+                        <i class="{$icon}"></i>
+                    </span>
+            {/if}
             <input{if isset($placeholder)} placeholder="{$placeholder}"{/if}{if isset($disabled)} disabled=""{/if} type="{$type}" id="{$field}" name="{$field}" class="text{if $error} error{/if}" value="{if isset($value)}{$value|htmlentities8}{/if}"{if $required} required=""{/if} />
+            {if isset($icon)}
+                </div>
+            {/if}
         {/if}
-        <span id="{$field}_error" class="help-block">{if $error}{if !isset($supress_messages)}{$error}{/if}{/if}</span>
+        <div id="{$field}_error" class="help-block">{if $error}{if !isset($supress_messages)}{$error}{/if}{/if}</div>
     </div>
 </div>
 
@@ -129,3 +134,4 @@
 {assign var="required" value=null}
 {assign var="seloptions" value=null}
 {assign var="origtype" value=null}
+{assign var="icon" value=null}

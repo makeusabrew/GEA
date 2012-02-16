@@ -128,6 +128,35 @@ class GeaController extends AbstractController {
     }
 
     public function add_project() {
-        //
+        $this->assign('columns', Table::factory('Repositories')->getColumns());
+
+        if ($this->request->isPost()) {
+            $repo = Table::factory('Repositories')->newObject();
+            $data = $this->filterRequest("type", "name", "clone_url", "auth_type");
+            $data['user_id'] = $this->user->getId();
+            if ($repo->setValues($data)) {
+                $repo->save();
+                $sender = new ZMQSocket(new ZMQContext(), ZMQ::SOCKET_PUSH);
+                $sender->connect(Settings::getValue("zmq.endpoint"));
+
+                $sender->send(json_encode(array($repo->getId())));
+                return $this->redirect("/");
+            }
+
+            $this->setErrors(
+                $repo->getErrors()
+            );
+        }
     }
+
+    protected function filterRequest() {
+        $final = array();
+        foreach (func_get_args() as $key) {
+            if ($this->request->getVar($key) !== null) {
+                $final[$key] = $this->request->getVar($key);
+            }
+        }
+        return $final;
+    }
+            
 }
