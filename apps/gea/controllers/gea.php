@@ -1,6 +1,21 @@
 <?php
 require_once("apps/users/controllers/abstract.php");
 class GeaController extends AbstractController {
+    public function init() {
+        parent::init();
+
+        switch ($this->path->getAction()) {
+            case "user_profile":
+                if ($this->user->isAuthed() === false) {
+                    $this->redirect("/");
+                    throw new CoreException("Not Authed");
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     public function welcome() {
         // get repos
         $data = json_decode(file_get_contents("https://api.github.com/user/repos?type=public&access_token=".$this->user->token."&per_page=100"));
@@ -43,7 +58,8 @@ class GeaController extends AbstractController {
 
     public function user_profile() {
         // do stats
-        $user = Table::factory('Users')->findByUsername($this->getMatch('username'));
+        //$user = Table::factory('Users')->findByUsername($this->getMatch('username'));
+        $user = $this->user;
         if (!$user) {
             throw new CoreException('User not found', CoreException::PATH_REJECTED);
         }
@@ -147,6 +163,10 @@ class GeaController extends AbstractController {
                 $repo->getErrors()
             );
         }
+    }
+
+    public function user_commits() {
+        $this->assign('commits', Table::factory('Commits')->findAllForUser($this->user->getId()));
     }
 
     protected function filterRequest() {

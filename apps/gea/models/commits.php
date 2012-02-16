@@ -49,4 +49,22 @@ class Commits extends Table {
         );
         return $this->queryAll($sql, $params);
     }
+
+    public function findAllForUser($user_id) {
+        $sql = "SELECT ".$this->getColumnString("c").",
+        r.name as r_name
+        FROM `commits` c
+        INNER JOIN `repositories` r
+        ON (c.repository_id=r.id)
+        INNER JOIN `users` u
+        ON (u.email=c.email)
+        WHERE u.id = ?
+        GROUP BY c.id
+        ORDER BY c.date DESC";
+        
+        $params = array(
+            $user_id
+        );
+        return $this->queryAll($sql, $params);
+    }
 }

@@ -6,14 +6,14 @@
             <div class=well style="padding: 8px 0;">
                 <ul class="nav nav-list">
                     <li class="nav-header">Home</li>
-                    <li class=active><a href="#"><i class="icon-picture"></i> Dashboard</a></li>
+                    <li class=active><a href="/stats"><i class="icon-picture"></i> Dashboard</a></li>
                     <li class="nav-header">Aggregated (All Projects)</li>
                     <li><a href="#"><i class="icon-signal"></i> Stacked Commits</a></li>
-                    <li><a href="#"><i class="icon-list"></i> Commit Log</a></li>
+                    <li><a href="/stats/commits"><i class="icon-list"></i> Commit Log</a></li>
                     <li><a href="#"><i class="icon-adjust"></i> Project Percentage</a></li>
                     <li class="nav-header">Per Project</li>
                     <li><a href="#"><i class="icon-cog"></i> My Contribution</a></li>
-                    <li><a href="#"><i class="icon-time"></i> Working Hours</a></li>
+                    <li><a href="/stats/hours"><i class="icon-time"></i> Working Hours</a></li>
                 </ul>
             </div>
         </div>

@@ -17,7 +17,7 @@
                     <ul class="nav">
                         <li class="active"><a href="/">Home</a></li>
                         {if $user->isAuthed()}
-                            <li><a href="/{$user->username}">My Page</a></li>
+                            <li><a href="/stats">My Stats</a></li>
                             <li><a href="/projects">My Projects</a></li>
                         {else}
                             <li><a href="/login">Sign in</a></li>

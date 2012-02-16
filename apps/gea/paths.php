@@ -9,7 +9,6 @@ PathManager::loadPaths(
         "action"  => "import",
         "method"  => "POST",
     ),
-    array(
-        "/(?P<username>[a-z0-9_-]+)", "user_profile"
-    )
+    array("/stats", "user_profile"),
+    array("/stats/commits", "user_commits")
 );
