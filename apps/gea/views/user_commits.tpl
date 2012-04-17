@@ -26,6 +26,7 @@
             {foreach from=$commits item="commit"}
                 <div>
                     {$commit->date|date_format:"d/m/Y H:i"}
+                    {$commit->r_name}
                     {$commit->message}
                 </div>
             {/foreach}

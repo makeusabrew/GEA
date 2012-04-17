@@ -13,7 +13,7 @@ client = mysql.createClient({
 })
 
 
-queue = zmq.createSocket 'pull'
+queue = zmq.socket 'pull'
 queue.bind 'tcp://127.0.0.1:8989', (err) ->
     console.log 'bound pull queue'
     throw err if err?
